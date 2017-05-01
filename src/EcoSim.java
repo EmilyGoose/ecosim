@@ -38,7 +38,8 @@ public class EcoSim {
 
     //Attack-related constants
     private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
-    private static final int FIGHT_DAMAGE = 10;
+    private static final double FIGHT_DAMAGE_LOSER = 0.5;
+    private static final double FIGHT_DAMAGE_WINNER = 0.1;
 
     public static void main(String[] args) throws Exception {
         GridObject[][] map = new GridObject[GRID_SIZE][GRID_SIZE];
@@ -197,12 +198,16 @@ public class EcoSim {
                             } else if (targetSpot instanceof Wolf && object.getGender() && targetSpot.getGender()) {
                                 //Male wolves fight
                                 if (object.compareTo(targetSpot) > 0) {
-                                    targetSpot.takeDamage(FIGHT_DAMAGE);
+                                    //Wolves take damage scaled based on the other wolf's health
+                                    targetSpot.takeDamage((int)(FIGHT_DAMAGE_LOSER * object.getHealth()));
+                                    object.takeDamage((int)(FIGHT_DAMAGE_WINNER * targetSpot.getHealth()));
                                 } else if (object.compareTo(targetSpot) < 0) {
-                                    object.takeDamage(FIGHT_DAMAGE);
+                                    object.takeDamage((int)(FIGHT_DAMAGE_LOSER * targetSpot.getHealth()));
+                                    targetSpot.takeDamage((int)(FIGHT_DAMAGE_WINNER * object.getHealth()));
                                 } else {
-                                    object.takeDamage(FIGHT_DAMAGE/2);
-                                    targetSpot.takeDamage(FIGHT_DAMAGE/2);
+                                    //Both wolves take reduced damage
+                                    object.takeDamage((int)(FIGHT_DAMAGE_WINNER * targetSpot.getHealth()));
+                                    targetSpot.takeDamage((int)(FIGHT_DAMAGE_WINNER * object.getHealth()));
                                 }
                             } else if (
                                     targetSpot instanceof Wolf &&

@@ -45,6 +45,8 @@ abstract class GridObject implements Comparable<GridObject>{
 
     //This is here because it's the same for wolves and sheep
     public int findNullSpace(ArrayList<GridObject> options) {
+        //I'm not using options.indexOf(null) because I don't necessarily want the first null
+        //This one gets a more or less random null value from the array
         if (options.contains(null)) {
             ArrayList<Integer> nulls = new ArrayList<>(options.size());
             for (int i = 0; i < options.size(); i ++) {

@@ -41,28 +41,32 @@ public class Sheep extends GridObject {
         //Shuffle the array to make sure we don't create a tendency to move in a particular direction
         Collections.shuffle(newOptions);
 
-        //Try to mate first, if the sheep is healthy enough for mating it's good on food for now
-        for (GridObject o : newOptions) {
+        int firstSheep = -1;
+        int firstPlant = -1;
+
+        for (int i = 0; i < newOptions.size(); i++) {
+            GridObject o = newOptions.get(i);
             if ( //Mate with an available sheep
                     o instanceof Sheep &&
-                    o.getGender() != super.getGender() &&
-                    o.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP && super.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP
+                            o.getGender() != super.getGender() &&
+                            o.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP && super.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP
                     ) {
-                return options.indexOf(o);
+                firstSheep = i;
+                break;
+            } else if (firstPlant == -1 && o instanceof Plant) {
+                firstPlant = i;
             }
         }
 
-        //Next, try to eat
-        for (GridObject o : newOptions) {
-            //Sheep don't eat if they're full
-            if (o instanceof Plant && this.getHealth() < EcoSim.MAX_SHEEP_HEALTH) {
-                return options.indexOf(o);
-            }
+        if (firstSheep >= 0) {
+            return options.indexOf(newOptions.get(firstSheep));
+        } else if (firstPlant >= 0) {
+            return options.indexOf(newOptions.get(firstPlant));
+        } else {
+            //Pick a random empty square and move to it
+            //We need a slightly different method of iteration here
+            //This is because options.indexOf(o) where o is null returns the first null value, as null cannot be unique
+            return super.findNullSpace(options);
         }
-
-        //Pick a random empty square and move to it
-        //We need a slightly different method of iteration here
-        //This is because options.indexOf(o) where o is null returns the first null value, as null cannot be unique
-        return super.findNullSpace(options);
     }
 }
