@@ -7,13 +7,16 @@
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class Sheep extends GridObject {
 
     Sheep() {
         super();
-        //This is a simplified version of (Math.random * ((max - min) + 1) + min)
-        this.addHealth(50 + (int)(Math.random() * 51)); //Random health from 50-100 (inclusive)
+        int min = 50;
+        int max = 100;
+        int health = new Random().nextInt((max - min) + 1) + min;
+        super.addHealth(health); //Random health from 50-100 (inclusive)
     }
 
     Sheep(int health) {
@@ -43,7 +46,7 @@ public class Sheep extends GridObject {
             if ( //Mate with an available sheep
                     o instanceof Sheep &&
                     o.getGender() != super.getGender() &&
-                    o.getHealth() >= EcoSim.MIN_MATE_HEALTH && super.getHealth() >= EcoSim.MIN_MATE_HEALTH
+                    o.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP && super.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP
                     ) {
                 return options.indexOf(o);
             }
@@ -51,7 +54,8 @@ public class Sheep extends GridObject {
 
         //Next, try to eat
         for (GridObject o : newOptions) {
-            if (o instanceof Plant) {
+            //Sheep don't eat if they're full
+            if (o instanceof Plant && this.getHealth() < EcoSim.MAX_SHEEP_HEALTH) {
                 return options.indexOf(o);
             }
         }

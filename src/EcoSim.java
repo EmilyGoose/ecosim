@@ -26,13 +26,15 @@ public class EcoSim {
     private static final double GROWTH_RATE = 5.4; //Chance a new plant will spawn that turn (Can be greater than 1)
     //Example: 20.4 guarantees 20 plants per turn, plus 40% chance of a 21st plant
 
-    //Animal health
+    //Animal +plant health
     public static final int MAX_WOLF_HEALTH = 100;
     public static final int MAX_SHEEP_HEALTH = 150;
 
     //Mating-related constants
-    public static final int MIN_MATE_HEALTH = 50;
-    public static final int BABY_HEALTH = 40;
+    public static final int MIN_MATE_HEALTH_SHEEP = 40;
+    public static final int MIN_MATE_HEALTH_WOLF = 60;
+    public static final int BABY_HEALTH_SHEEP = 20;
+    public static final int BABY_HEALTH_WOLF = 40;
 
     //Attack-related constants
     private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
@@ -90,7 +92,6 @@ public class EcoSim {
                 }
                 plantSpawn -= 1;
             } while(plantSpawn > 1);
-
             for (int y = 0; y < GRID_SIZE; y++) {
                 for (int x = 0; x < GRID_SIZE; x++) {
                     EcoSim.updateObject(x, y, map, i);
@@ -143,7 +144,7 @@ public class EcoSim {
 
                     if (targetSpot != null) {
                         if (object instanceof Sheep) {
-                            if (targetSpot instanceof Plant) {
+                            if (targetSpot instanceof Plant && targetSpot.getHealth() > 0) {
                                 //Yum!
                                 object.addHealth(targetSpot.getHealth());
                                 //Move, overwriting the plant
@@ -152,8 +153,8 @@ public class EcoSim {
                             } else if (
                                     targetSpot instanceof Sheep &&
                                     targetSpot.getGender() != object.getGender() && //Opposite genders
-                                    targetSpot.getHealth() >= MIN_MATE_HEALTH &&
-                                    object.getHealth() >= MIN_MATE_HEALTH //Enough health
+                                    targetSpot.getHealth() >= MIN_MATE_HEALTH_SHEEP &&
+                                    object.getHealth() >= MIN_MATE_HEALTH_SHEEP //Enough health
                                     ) {
                                 //Spawn a sheep
                                 GridObject newSheepSpot;
@@ -166,7 +167,7 @@ public class EcoSim {
                                         newSheepX = (int) (Math.random() * GRID_SIZE);
                                         newSheepSpot = map[newSheepY][newSheepX];
                                     } while (newSheepSpot != null);
-                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH);
+                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH_SHEEP);
                                 } else { //We can overwrite plants in a pinch
                                     do {
                                         newSheepY = (int) (Math.random() * GRID_SIZE);
@@ -175,12 +176,12 @@ public class EcoSim {
                                     } while (!(newSheepSpot instanceof  Plant));
                                     //The sheep is slightly more damaged b/c it'll have to eat its way out anyways
                                     //Landing on plants must hurt
-                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH - 10);
+                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH_SHEEP - 10);
                                 }
 
                                 //Damage the parents
-                                targetSpot.takeDamage(BABY_HEALTH/2);
-                                object.takeDamage(BABY_HEALTH/2);
+                                targetSpot.takeDamage(BABY_HEALTH_SHEEP/2);
+                                object.takeDamage(BABY_HEALTH_SHEEP/2);
                             }
                         } else if (object instanceof Wolf) {
                             if (targetSpot instanceof Sheep) {
@@ -206,8 +207,8 @@ public class EcoSim {
                             } else if (
                                     targetSpot instanceof Wolf &&
                                     targetSpot.getGender() != object.getGender() && //Opposite genders
-                                    targetSpot.getHealth() >= MIN_MATE_HEALTH &&
-                                    object.getHealth() >= MIN_MATE_HEALTH //Enough health
+                                    targetSpot.getHealth() >= MIN_MATE_HEALTH_WOLF &&
+                                    object.getHealth() >= MIN_MATE_HEALTH_WOLF //Enough health
                                     ) {
                                 //Spawn a wolf
                                 GridObject newWolfSpot;
@@ -229,9 +230,9 @@ public class EcoSim {
 
                                 //Damage the parents
                                 //Wolves take more damage than sheep because they needed to be nerfed
-                                targetSpot.takeDamage(BABY_HEALTH);
-                                object.takeDamage(BABY_HEALTH);
-                                map[newWolfY][newWolfX] = new Wolf(BABY_HEALTH);
+                                targetSpot.takeDamage(BABY_HEALTH_WOLF);
+                                object.takeDamage(BABY_HEALTH_WOLF);
+                                map[newWolfY][newWolfX] = new Wolf(BABY_HEALTH_WOLF);
                             }
                         }
                     } else {
@@ -239,6 +240,8 @@ public class EcoSim {
                         map[newY][newX] = map[y][x];
                         map[y][x] = null;
                     }
+
+
                 }
             }
 
@@ -247,6 +250,7 @@ public class EcoSim {
             if (object.getHealth() <= 0) {
                 map[y][x] = null;
             }
+
         }
 
         //Flag the object as updated
