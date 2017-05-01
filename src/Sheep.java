@@ -52,8 +52,8 @@ public class Sheep extends GridObject {
                             o.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP && super.getHealth() >= EcoSim.MIN_MATE_HEALTH_SHEEP
                     ) {
                 firstSheep = i;
-                break;
-            } else if (firstPlant == -1 && o instanceof Plant) {
+                break; //We've found a mate, no need to check further since this is our first priority
+            } else if (firstPlant == -1 && o instanceof Plant && this.getHealth() < EcoSim.MAX_SHEEP_HEALTH - o.getHealth()) {
                 firstPlant = i;
             }
         }

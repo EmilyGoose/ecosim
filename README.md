@@ -27,9 +27,7 @@ Percentage of filled world to spawn as wolves. Expressed as a double between 0 a
 Percentage of filled world to spawn as sheep. Expressed as a double between 0 and 1.
 
 ### GROWTH_RATE
-Chance a new plant will spawn that turn. Values greater than 1 guarantee a certain number of plants.
-
-Example: 20.4 guarantees 20 plants per turn, plus 40% chance of a 21st plant
+Chance that any given empty spot will sprout a new plant any given tick. Expressed as a double between 0 and 1.
 
 ### MAX_WOLF_HEALTH
 Integer determining the maximum health for a wolf

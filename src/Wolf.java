@@ -41,35 +41,37 @@ public class Wolf extends GridObject{
         //Shuffle the array to make sure we don't create a tendency to move in a particular direction
         Collections.shuffle(newOptions);
 
-        //Try to mate first, if the wolf is healthy enough for mating it's good on food for now
-        for (GridObject o : newOptions) {
+        int firstWolf = -1;
+        int firstSheep = -1;
+        int firstMale = -1;
+
+        for (int i = 0; i < newOptions.size(); i++) {
+            GridObject o = newOptions.get(i);
             if ( //Mate with an available wolf
                     o instanceof Wolf &&
                             o.getGender() != super.getGender() &&
                             o.getHealth() >= EcoSim.MIN_MATE_HEALTH_WOLF && super.getHealth() >= EcoSim.MIN_MATE_HEALTH_WOLF
                     ) {
-                return options.indexOf(o);
+                firstWolf = i;
+                break; //We've found a mate, no need to check further since this is our first priority
+            } else if (firstSheep == -1 && o instanceof Sheep && this.getHealth() < EcoSim.MAX_WOLF_HEALTH - o.getHealth() / 2) {
+                firstSheep = i;
+            } else if (firstMale == -1 && o instanceof Wolf && o.getGender() && super.getGender()) {
+                firstMale = i;
             }
         }
 
-        //Next, try to eat a sheep
-        for (GridObject o : newOptions) {
-            //Wolves don't eat if they're full or close to full
-            if (o instanceof Sheep && this.getHealth() < EcoSim.MAX_WOLF_HEALTH - o.getHealth()) {
-                return options.indexOf(o);
-            }
+        if (firstWolf >= 0) {
+            return options.indexOf(newOptions.get(firstWolf));
+        } else if (firstSheep >= 0) {
+            return options.indexOf(newOptions.get(firstSheep));
+        } else if (firstMale > -1) {
+            return options.indexOf(newOptions.get(firstMale));
+        } else {
+            //Pick a random empty square and move to it
+            //We need a slightly different method of iteration here
+            //This is because options.indexOf(o) where o is null returns the first null value, as null cannot be unique
+            return super.findNullSpace(options);
         }
-
-        //Next, try to fight another male wolf
-        for (GridObject o : newOptions) {
-            if (o instanceof Wolf && o.getGender() && super.getGender()) {
-                return options.indexOf(o);
-            }
-        }
-
-        //Pick a random empty square and move to it
-        //We need a slightly different method of iteration here
-        //This is because options.indexOf(o) where o is null returns the first null value, as null cannot be unique
-        return super.findNullSpace(options);
     }
 }

@@ -18,13 +18,12 @@ public class EcoSim {
     private static final int TICK_LENGTH = 100; //Milliseconds per grid refresh
 
     //World constants. Not guaranteed but they'll be close.
-    private static final double WORLD_FILL_DENSITY = 0.4;
+    private static final double WORLD_FILL_DENSITY = 0.3;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
-    private static final double WOLF_DENSITY = 0.05;
-    private static final double SHEEP_DENSITY = 0.5;
+    private static final double WOLF_DENSITY = 0.1;
+    private static final double SHEEP_DENSITY = 0.9;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
-    private static final double GROWTH_RATE = 5.4; //Chance a new plant will spawn that turn (Can be greater than 1)
-    //Example: 20.4 guarantees 20 plants per turn, plus 40% chance of a 21st plant
+    private static final double GROWTH_RATE = 0.3; //Chance a new plant will spawn in a null spot
 
     //Animal +plant health
     public static final int MAX_WOLF_HEALTH = 100;
@@ -72,30 +71,19 @@ public class EcoSim {
 
         //Run the specified number of iterations
         for(int i = 0; i < ITERATIONS; i++) {
-            double plantSpawn = GROWTH_RATE;
-            do {
-                //Figure out if we want to spawn a plant this turn
-                if (Math.random() <= plantSpawn) {
-                    //Spawn a plant
-                    if (EcoSim.hasSpaceLeft(map)) {
-                        GridObject newPlantSpot;
-                        int newY;
-                        int newX;
-                        do { //Statistically, this should never be an infinite loop
-                            newY = (int) (Math.random() * GRID_SIZE);
-                            newX = (int) (Math.random() * GRID_SIZE);
-                            newPlantSpot = map[newY][newX];
-                        } while (newPlantSpot != null);
 
-                        //Let it grow
-                        map[newY][newX] = new Plant();
+            //Spawn plants based on rates
+            for (int row = 0; row < GRID_SIZE; row++) {
+                for (int col = 0; col < GRID_SIZE; col++) {
+                    if (map[row][col] == null && Math.random() <= GROWTH_RATE) {
+                        map[row][col] = new Plant();
                     }
                 }
-                plantSpawn -= 1;
-            } while(plantSpawn > 1);
-            for (int y = 0; y < GRID_SIZE; y++) {
-                for (int x = 0; x < GRID_SIZE; x++) {
-                    EcoSim.updateObject(x, y, map, i);
+            }
+
+            for (int row = 0; row < GRID_SIZE; row++) {
+                for (int col = 0; col < GRID_SIZE; col++) {
+                    EcoSim.updateObject(col, row, map, i);
                 }
             }
             grid.refresh();
@@ -250,7 +238,7 @@ public class EcoSim {
                 }
             }
 
-            //Time-based damage (end of round)
+            //Time-based damage (end of tick)
             object.takeDamage(1);
             if (object.getHealth() <= 0) {
                 map[y][x] = null;
