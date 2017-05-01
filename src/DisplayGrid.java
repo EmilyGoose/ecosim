@@ -13,17 +13,17 @@ import javax.imageio.*;
 class DisplayGrid {
 
     private JFrame frame;
-    private int maxX,maxY, GridToScreenRatio;
+    private int GridToScreenRatio;
     private GridObject[][] world;
 
     DisplayGrid(GridObject[][] w) {
         this.world = w;
 
-        maxX = Toolkit.getDefaultToolkit().getScreenSize().width;
-        maxY = Toolkit.getDefaultToolkit().getScreenSize().height;
+        int maxX = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int maxY = Toolkit.getDefaultToolkit().getScreenSize().height;
         GridToScreenRatio = maxY / (world.length+1);  //ratio to fit in screen as square map
 
-        System.out.println("Map size: "+world.length+" by "+world[0].length + "\nScreen size: "+ maxX +"x"+maxY+ " Ratio: " + GridToScreenRatio);
+        System.out.println("Map size: " + world.length + " by "+world[0].length + "\nScreen size: " + maxX + "x" + maxY + " Ratio: " + GridToScreenRatio);
 
         this.frame = new JFrame("Map of World");
 
@@ -56,12 +56,43 @@ class DisplayGrid {
             setDoubleBuffered(true);
             g.setColor(Color.BLACK);
 
-            for(int i = 0; i<world[0].length;i=i+1)
-            {
+            for(int i = 0; i<world[0].length;i=i+1) {
                 for(int j = 0; j<world.length;j=j+1) {
 
                     //Grass background tile
                     g.drawImage(grass, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
+
+                    //Declare variables
+                    GridObject object = world[i][j];
+                    int xVal = j * GridToScreenRatio;
+                    int yVal = i * GridToScreenRatio;
+                    int width = GridToScreenRatio;
+                    int height = GridToScreenRatio;
+
+                    Image objectImage = null;
+                    Image genderIcon = null;
+
+                    if (object instanceof Sheep) {
+                        objectImage = sheep;
+                        genderIcon = object.getGender() ? maleIcon : femaleIcon;
+                    } else if (object instanceof Wolf) {
+                        objectImage = wolf;
+                        genderIcon = object.getGender() ? maleIcon : femaleIcon;
+                    } else if (object instanceof Plant) {
+                        objectImage = plant;
+                    }
+
+                    if (objectImage != null) {
+                        g.drawImage(objectImage, xVal, yVal, width, height, this);
+                    }
+
+                    if (genderIcon != null) {
+                        g.drawImage(objectImage, xVal, yVal, width/5, height/5, this);
+                    }
+
+                   /*
+
+                   Old, poorly-written code
 
                     if (world[i][j] instanceof Sheep) {
                         g.drawImage(sheep, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
@@ -79,7 +110,7 @@ class DisplayGrid {
                         }
                     } else if (world[i][j] instanceof Plant) {
                         g.drawImage(plant, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
-                    }
+                    }*/
 
                 }
             }

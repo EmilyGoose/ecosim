@@ -17,10 +17,10 @@ public class EcoSim {
     private static int TICK_LENGTH = 200; //Milliseconds per grid refresh
 
     //World densities. Not guaranteed but they'll be close.
-    private static double WORLD_FILL_DENSITY = 0.5;
+    private static double WORLD_FILL_DENSITY = 0.6;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
-    private static double WOLF_DENSITY = 0.05;
-    private static double SHEEP_DENSITY = 0.9;
+    private static double WOLF_DENSITY = 0.01;
+    private static double SHEEP_DENSITY = 0.5;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
 
     //Mating values
@@ -260,6 +260,3 @@ public class EcoSim {
     }
 
 }
-
-
-//TODO: Remove this comment

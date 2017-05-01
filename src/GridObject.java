@@ -43,7 +43,7 @@ abstract class GridObject implements Comparable<GridObject>{
     //This is here because it's the same for wolves and sheep
     public int findNullSpace(ArrayList<GridObject> options) {
         if (options.contains(null)) {
-            ArrayList<Integer> nulls = new ArrayList<>(0);
+            ArrayList<Integer> nulls = new ArrayList<>(options.size());
             for (int i = 0; i < options.size(); i ++) {
                 if (options.get(i) == null) {
                     nulls.add(i);
