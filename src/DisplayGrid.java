@@ -56,16 +56,16 @@ class DisplayGrid {
             setDoubleBuffered(true);
             g.setColor(Color.BLACK);
 
-            for(int i = 0; i<world[0].length;i=i+1) {
-                for(int j = 0; j<world.length;j=j+1) {
+            for(int col = 0; col<world[0].length;col=col+1) {
+                for(int row = 0; row<world.length;row=row+1) {
 
                     //Grass background tile
-                    g.drawImage(grass, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
+                    g.drawImage(grass, row * GridToScreenRatio, col * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
 
                     //Declare variables
-                    GridObject object = world[i][j];
-                    int xVal = j * GridToScreenRatio;
-                    int yVal = i * GridToScreenRatio;
+                    GridObject object = world[col][row];
+                    int xVal = row * GridToScreenRatio;
+                    int yVal = col * GridToScreenRatio;
                     int width = GridToScreenRatio;
                     int height = GridToScreenRatio;
 

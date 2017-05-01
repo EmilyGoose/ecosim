@@ -7,6 +7,9 @@
 
 import java.util.ArrayList;
 
+//IntelliJ-specific line to stop annoying "access can be package-private" warnings
+@SuppressWarnings("WeakerAccess")
+
 public class EcoSim {
 
     //Program constants
@@ -42,19 +45,19 @@ public class EcoSim {
         DisplayGrid grid = new DisplayGrid(map);
 
         //Populate the grid
-        for (int y = 0; y < GRID_SIZE; y++) {
-            for (int x = 0; x < GRID_SIZE; x++) {
+        for (int col = 0; col < GRID_SIZE; col++) {
+            for (int row = 0; row < GRID_SIZE; row++) {
                 //Check if the tile even needs to be filled in the first place
                 if (Math.random() <= WORLD_FILL_DENSITY) {
                     //Choose the GridObject we're going to spawn
                     double randomType = Math.random();
                     //Spawn a GridObject
                     if (randomType <= WOLF_DENSITY) {
-                        map[y][x] = new Wolf();
+                        map[col][row] = new Wolf();
                     } else if (randomType <= WOLF_DENSITY + SHEEP_DENSITY) {
-                        map[y][x] = new Sheep();
+                        map[col][row] = new Sheep();
                     } else {
-                        map[y][x] = new Plant();
+                        map[col][row] = new Plant();
                     }
                 }
             }
@@ -110,13 +113,13 @@ public class EcoSim {
             ArrayList<int[]> optionCoords = new ArrayList<>(0);
 
             //Note: Animals can move diagonally
-            for (int i = -1; i <= 1; i += 1) {
-                if (y + i >= 0 && y + i < GRID_SIZE) { //If the outer loop is out of bounds we don't need an inner
-                    for (int j = -1; j <= 1; j += 1) {
-                        if (x + j >= 0 && x + j < GRID_SIZE) { //Make sure it's not out of bounds
-                            if (!(j == 0 && i == 0)) { //Make sure non-movement isn't on the list
-                                options.add(map[y+i][x+j]);
-                                optionCoords.add(new int[]{y + i, x + j});
+            for (int col = -1; col <= 1; col += 1) {
+                if (y + col >= 0 && y + col < GRID_SIZE) { //If the outer loop is out of bounds we don't need an inner
+                    for (int row = -1; row <= 1; row += 1) {
+                        if (x + row >= 0 && x + row < GRID_SIZE) { //Make sure it's not out of bounds
+                            if (!(row == 0 && col == 0)) { //Make sure non-movement isn't on the list
+                                options.add(map[y+col][x+row]);
+                                optionCoords.add(new int[]{y + col, x + row});
                             }
                         }
                     }
@@ -251,9 +254,9 @@ public class EcoSim {
     }
 
     private static boolean hasSpaceLeft(GridObject[][] map) {
-        for (GridObject[] a : map) {
-            for (GridObject o : a) {
-                if (o == null) {
+        for (GridObject[] row : map) {
+            for (GridObject rowItem : row) {
+                if (rowItem == null) {
                     return true;
                 }
             }

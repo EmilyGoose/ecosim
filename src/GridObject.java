@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+//IntelliJ-specific line to stop annoying "access can be package-private" warnings
+@SuppressWarnings("WeakerAccess")
+
 abstract class GridObject implements Comparable<GridObject>{
 
     private int health;
