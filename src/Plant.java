@@ -11,6 +11,7 @@ public class Plant extends GridObject{
 
     Plant() {
         super();
+        //This is a simplified version of (Math.random * ((max - min) + 1) + min)
         super.addHealth(2 + (int)(Math.random() * 4)); //Random health from 2-5 (inclusive)
     }
 

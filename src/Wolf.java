@@ -12,6 +12,7 @@ public class Wolf extends GridObject{
 
     Wolf() {
         super();
+        //This is a simplified version of (Math.random * ((max - min) + 1) + min)
         super.addHealth(50 + (int)(Math.random() * 51)); //Random health from 50-100 (inclusive)
     }
 
@@ -20,8 +21,19 @@ public class Wolf extends GridObject{
         super.addHealth(health);
     }
 
+    @Override
+    public void addHealth(int health) {
+        if (this.getHealth() + health > EcoSim.MAX_WOLF_HEALTH) {
+            //Make sure health doesn't exceed the maximum
+            health = EcoSim.MAX_WOLF_HEALTH - this.getHealth();
+        }
+        super.addHealth(health);
+    }
+
     public int findTarget(ArrayList<GridObject> options) {
-        ArrayList<GridObject> newOptions = (ArrayList)options.clone();
+
+        //Clone the array
+        ArrayList<GridObject> newOptions = new ArrayList<>(options);
 
         //Shuffle the array to make sure we don't create a tendency to move in a particular direction
         Collections.shuffle(newOptions);

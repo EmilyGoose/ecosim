@@ -9,25 +9,31 @@ import java.util.ArrayList;
 
 public class EcoSim {
 
-    //Important constants
-    private static int GRID_SIZE = 15;
-    private static int ITERATIONS = 1000;
-    private static double GROWTH_RATE = 5.4; //Chance a new plant will spawn that turn (Can be greater than 1)
-    //Example: 20.4 guarantees 20 plants per turn, plus 40% chance of a 21st plant
-    private static int TICK_LENGTH = 200; //Milliseconds per grid refresh
+    //Program constants
+    private static final int GRID_SIZE = 15;
+    private static final int ITERATIONS = 1000;
+    private static final int TICK_LENGTH = 200; //Milliseconds per grid refresh
 
-    //World densities. Not guaranteed but they'll be close.
-    private static double WORLD_FILL_DENSITY = 0.6;
+    //World constants. Not guaranteed but they'll be close.
+    private static final double WORLD_FILL_DENSITY = 0.6;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
-    private static double WOLF_DENSITY = 0.01;
-    private static double SHEEP_DENSITY = 0.5;
+    private static final double WOLF_DENSITY = 0.05;
+    private static final double SHEEP_DENSITY = 0.5;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
+    private static final double GROWTH_RATE = 5.4; //Chance a new plant will spawn that turn (Can be greater than 1)
+    //Example: 20.4 guarantees 20 plants per turn, plus 40% chance of a 21st plant
 
-    //Mating values
-    public static int MIN_MATE_HEALTH = 50;
-    public static int BABY_HEALTH = 40;
+    //Animal health
+    public static final int MAX_WOLF_HEALTH = 100;
+    public static final int MAX_SHEEP_HEALTH = 150;
 
-    private static double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
+    //Mating-related constants
+    public static final int MIN_MATE_HEALTH = 50;
+    public static final int BABY_HEALTH = 40;
+
+    //Attack-related constants
+    private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
+    private static final int FIGHT_DAMAGE = 10;
 
     private static int currentIter;
 
@@ -191,12 +197,12 @@ public class EcoSim {
                             } else if (targetSpot instanceof Wolf && object.getGender() && targetSpot.getGender()) {
                                 //Male wolves fight
                                 if (object.compareTo(targetSpot) > 0) {
-                                    targetSpot.takeDamage(10);
+                                    targetSpot.takeDamage(FIGHT_DAMAGE);
                                 } else if (object.compareTo(targetSpot) < 0) {
-                                    object.takeDamage(10);
+                                    object.takeDamage(FIGHT_DAMAGE);
                                 } else {
-                                    object.takeDamage(5);
-                                    targetSpot.takeDamage(5);
+                                    object.takeDamage(FIGHT_DAMAGE/2);
+                                    targetSpot.takeDamage(FIGHT_DAMAGE/2);
                                 }
                             } else if (
                                     targetSpot instanceof Wolf &&
