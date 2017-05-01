@@ -4,11 +4,12 @@
  */
 
 // Graphics Imports
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.*;
-import javax.imageio.*;
 
+//IntelliJ-specific line to stop annoying "access can be package-private" warnings
+@SuppressWarnings("WeakerAccess")
 
 class DisplayGrid {
 
@@ -25,12 +26,12 @@ class DisplayGrid {
 
         System.out.println("Map size: " + world.length + " by "+world[0].length + "\nScreen size: " + maxX + "x" + maxY + " Ratio: " + GridToScreenRatio);
 
-        this.frame = new JFrame("Map of World");
+        this.frame = new JFrame("Misha's ECO Sim");
 
         GridAreaPanel worldPanel = new GridAreaPanel();
 
         frame.getContentPane().add(BorderLayout.CENTER, worldPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         frame.setVisible(true);
     }
