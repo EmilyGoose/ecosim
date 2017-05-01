@@ -1,4 +1,4 @@
-/**
+/*
  * Sheep
  * Subclass of GridObject
  * Misha Larionov

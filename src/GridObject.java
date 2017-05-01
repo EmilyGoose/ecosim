@@ -1,4 +1,4 @@
-/**
+/*
  * GridObject
  * Generic grid object for ECO sim
  * Misha Larionov

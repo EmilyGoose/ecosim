@@ -1,4 +1,4 @@
-/**
+/*
  * Wolf
  * Subclass of GridObject
  * Misha Larionov

@@ -1,4 +1,4 @@
-/**
+/*
  * Plant
  * Subclass of GridObject
  * Misha Larionov
