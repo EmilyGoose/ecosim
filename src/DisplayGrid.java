@@ -87,30 +87,9 @@ class DisplayGrid {
                     }
 
                     if (genderIcon != null) {
-                        g.drawImage(objectImage, xVal, yVal, width/5, height/5, this);
+                        g.drawImage(genderIcon, xVal, yVal, width/5, height/5, this);
                     }
 
-                   /*
-
-                   Old, poorly-written code
-
-                    if (world[i][j] instanceof Sheep) {
-                        g.drawImage(sheep, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
-                        if (world[i][j].getGender()) {
-                            g.drawImage(maleIcon, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio / 5, GridToScreenRatio / 5, this);
-                        } else {
-                            g.drawImage(femaleIcon, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio / 5, GridToScreenRatio / 5, this);
-                        }
-                    } else if (world[i][j] instanceof Wolf) {
-                        g.drawImage(wolf, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
-                        if (world[i][j].getGender()) {
-                            g.drawImage(maleIcon, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio / 5, GridToScreenRatio / 5, this);
-                        } else {
-                            g.drawImage(femaleIcon, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio / 5, GridToScreenRatio / 5, this);
-                        }
-                    } else if (world[i][j] instanceof Plant) {
-                        g.drawImage(plant, j * GridToScreenRatio, i * GridToScreenRatio, GridToScreenRatio, GridToScreenRatio, this);
-                    }*/
 
                 }
             }
