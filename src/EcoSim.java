@@ -35,8 +35,6 @@ public class EcoSim {
     private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
     private static final int FIGHT_DAMAGE = 10;
 
-    private static int currentIter;
-
     public static void main(String[] args) throws Exception {
         GridObject[][] map = new GridObject[GRID_SIZE][GRID_SIZE];
 
@@ -68,8 +66,6 @@ public class EcoSim {
 
         //Run the specified number of iterations
         for(int i = 0; i < ITERATIONS; i++) {
-            currentIter = i;
-
             double plantSpawn = GROWTH_RATE;
             do {
                 //Figure out if we want to spawn a plant this turn
@@ -94,7 +90,7 @@ public class EcoSim {
 
             for (int y = 0; y < GRID_SIZE; y++) {
                 for (int x = 0; x < GRID_SIZE; x++) {
-                    EcoSim.updateObject(x, y, map);
+                    EcoSim.updateObject(x, y, map, i);
                 }
             }
             grid.refresh();
@@ -104,7 +100,7 @@ public class EcoSim {
         }
     }
 
-    private static void updateObject(int x, int y, GridObject[][] map) {
+    private static void updateObject(int x, int y, GridObject[][] map, int currentIter) {
         GridObject object = map[y][x];
         //Make sure the object is an animal we haven't moved yet
         if (object != null && !(object instanceof Plant) && object.getLastUpdated() < currentIter) {
