@@ -1,4 +1,4 @@
-/**
+/*
  * EcoSim
  * Main project file for ECOsim
  * Misha Larionov
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class EcoSim {
 
     //Program constants
-    private static final int GRID_SIZE = 15;
+    private static final int GRID_SIZE = 20;
     private static final int ITERATIONS = 1000;
-    private static final int TICK_LENGTH = 200; //Milliseconds per grid refresh
+    private static final int TICK_LENGTH = 100; //Milliseconds per grid refresh
 
     //World constants. Not guaranteed but they'll be close.
-    private static final double WORLD_FILL_DENSITY = 0.6;
+    private static final double WORLD_FILL_DENSITY = 0.4;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
     private static final double WOLF_DENSITY = 0.05;
     private static final double SHEEP_DENSITY = 0.5;
