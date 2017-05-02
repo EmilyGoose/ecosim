@@ -6,6 +6,7 @@
 // Graphics Imports
 
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.*;
 
 //IntelliJ-specific line to stop annoying "access can be package-private" warnings
@@ -17,7 +18,27 @@ class DisplayGrid {
     private int GridToScreenRatio;
     private GridObject[][] world;
 
+    private static Image sheep;
+    private static Image wolf;
+    private static Image plant;
+    private static Image deadPlant;
+    private static Image yellowPlant;
+    private static Image grass;
+    private static Image maleIcon;
+    private static Image femaleIcon;
+
     DisplayGrid(GridObject[][] w) {
+
+        //Import images
+        sheep = Toolkit.getDefaultToolkit().getImage("res/sheep.png");
+        wolf = Toolkit.getDefaultToolkit().getImage("res/wolf.png");
+        plant = Toolkit.getDefaultToolkit().getImage("res/plant.png");
+        deadPlant = Toolkit.getDefaultToolkit().getImage("res/plant_dead.png");
+        yellowPlant = Toolkit.getDefaultToolkit().getImage("res/plant_yellow.png");
+        grass = Toolkit.getDefaultToolkit().getImage("res/grass.png");
+        maleIcon = Toolkit.getDefaultToolkit().getImage("res/male.png");
+        femaleIcon = Toolkit.getDefaultToolkit().getImage("res/female.png");
+
         this.world = w;
 
         int maxX = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -46,15 +67,6 @@ class DisplayGrid {
     class GridAreaPanel extends JPanel {
         public void paintComponent(Graphics g) {
 
-            //Import images
-            Image sheep = Toolkit.getDefaultToolkit().getImage("res/sheep.png");
-            Image wolf = Toolkit.getDefaultToolkit().getImage("res/wolf.png");
-            Image plant = Toolkit.getDefaultToolkit().getImage("res/plant.png");
-            Image deadPlant = Toolkit.getDefaultToolkit().getImage("res/plant_dead.png");
-            Image grass = Toolkit.getDefaultToolkit().getImage("res/grass.png");
-            Image maleIcon = Toolkit.getDefaultToolkit().getImage("res/male.png");
-            Image femaleIcon = Toolkit.getDefaultToolkit().getImage("res/female.png");
-
             setDoubleBuffered(true);
             g.setColor(Color.BLACK);
 
@@ -81,7 +93,7 @@ class DisplayGrid {
                         objectImage = wolf;
                         genderIcon = object.getGender() ? maleIcon : femaleIcon;
                     } else if (object instanceof Plant) {
-                        objectImage = object.getHealth() > 0 ? plant : deadPlant;
+                        objectImage = object.getHealth() > 0 ? (object.getHealth() > 5 ? plant : yellowPlant) : deadPlant;
                     }
 
                     if (objectImage != null) {

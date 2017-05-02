@@ -50,6 +50,9 @@ Integer determining the health of a newly spawned baby wolf. Damage penalty to p
 ### STRUGGLE_CHANCE
 Chance a wolf will be unable to attack a stronger sheep. Expressed as a double between 0 and 1.
 
+###EATING_HEALTH_RATIO
+Double determining how much of an eaten sheep's health the wolf absorbs. It is recommended this stay well below 1.
+
 ### FIGHT_DAMAGE_LOSER
 Double determining the damage multiplier dealt to a losing wolf. Multiplied by health of the winner to determine damage
 

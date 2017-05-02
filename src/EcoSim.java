@@ -13,6 +13,8 @@ import java.util.Random;
 
 public class EcoSim {
 
+    //See README.md for full list of constants and their uses
+
     //Program constants
     private static final int GRID_SIZE = 20;
     private static final int ITERATIONS = 1000;
@@ -38,8 +40,9 @@ public class EcoSim {
 
     //Attack-related constants
     private static final double STRUGGLE_CHANCE = 0.6; //Chance a wolf will be unable to attack a stronger sheep
-    private static final double FIGHT_DAMAGE_LOSER = 0.5;
-    private static final double FIGHT_DAMAGE_WINNER = 0.1;
+    private static final double EATING_HEALTH_RATIO = 0.2; //Multiplied by an eaten sheep's health before adding to wolf
+    private static final double FIGHT_DAMAGE_LOSER = 0.8;
+    private static final double FIGHT_DAMAGE_WINNER = 0.2;
 
     public static void main(String[] args) throws Exception {
         GridObject[][] map = new GridObject[GRID_SIZE][GRID_SIZE];
@@ -183,7 +186,7 @@ public class EcoSim {
                             if (targetSpot instanceof Sheep) {
                                 if (object.compareTo(targetSpot) > 0 || Math.random() <= STRUGGLE_CHANCE) {
                                     //Yum!
-                                    object.addHealth(targetSpot.getHealth() / 2);
+                                    object.addHealth((int)(targetSpot.getHealth() * EATING_HEALTH_RATIO));
                                     //Move, overwriting the sheep
                                     map[newY][newX] = map[y][x];
                                     map[y][x] = null;
