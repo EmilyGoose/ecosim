@@ -48,7 +48,7 @@ Integer determining the health of a newly spawned baby sheep. Damage penalty to 
 Integer determining the health of a newly spawned baby wolf. Damage penalty to parents is also calculated from this.
 
 ### STRUGGLE_CHANCE
-Chance a wolf will be unable to attack a weaker sheep. Expressed as a double between 0 and 1.
+Chance a wolf will be unable to attack a stronger sheep. Expressed as a double between 0 and 1.
 
 ### FIGHT_DAMAGE_LOSER
 Double determining the damage multiplier dealt to a losing wolf. Multiplied by health of the winner to determine damage

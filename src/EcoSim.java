@@ -21,9 +21,9 @@ public class EcoSim {
     private static final double WORLD_FILL_DENSITY = 0.3;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
     private static final double WOLF_DENSITY = 0.1;
-    private static final double SHEEP_DENSITY = 0.9;
+    private static final double SHEEP_DENSITY = 0.4;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
-    private static final double GROWTH_RATE = 0.3; //Chance a new plant will spawn in a null spot
+    private static final double GROWTH_RATE = 0.1; //Chance a new plant will spawn in a null spot
 
     //Animal +plant health
     public static final int MAX_WOLF_HEALTH = 100;
@@ -36,7 +36,7 @@ public class EcoSim {
     public static final int BABY_HEALTH_WOLF = 40;
 
     //Attack-related constants
-    private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a weaker sheep
+    private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a stronger sheep
     private static final double FIGHT_DAMAGE_LOSER = 0.5;
     private static final double FIGHT_DAMAGE_WINNER = 0.1;
 
