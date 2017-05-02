@@ -25,7 +25,7 @@ public class EcoSim {
     //We don't need to declare PLANT_DENSITY because we get it algebraically
     private static final double GROWTH_RATE = 0.1; //Chance a new plant will spawn in a null spot
 
-    //Animal +plant health
+    //Animal health
     public static final int MAX_WOLF_HEALTH = 100;
     public static final int MAX_SHEEP_HEALTH = 150;
 
@@ -43,7 +43,7 @@ public class EcoSim {
     public static void main(String[] args) throws Exception {
         GridObject[][] map = new GridObject[GRID_SIZE][GRID_SIZE];
 
-        //Set up Grid Panel
+        //Set up the grid to display everything
         DisplayGrid grid = new DisplayGrid(map);
 
         //Populate the grid
@@ -81,6 +81,8 @@ public class EcoSim {
                 }
             }
 
+            grid.refresh();
+
             for (int row = 0; row < GRID_SIZE; row++) {
                 for (int col = 0; col < GRID_SIZE; col++) {
                     EcoSim.updateObject(col, row, map, i);
@@ -88,7 +90,7 @@ public class EcoSim {
             }
             grid.refresh();
 
-            //Make it pause so the user sees it
+            //Make the thread sleep to allow the user to see the result of the tick
             try{ Thread.sleep(TICK_LENGTH); }catch(Exception e) { System.out.println("Couldn't sleep for some reason."); }
         }
     }

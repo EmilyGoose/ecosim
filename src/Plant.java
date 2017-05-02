@@ -19,7 +19,7 @@ public class Plant extends GridObject{
     }
 
     public int findTarget(ArrayList<GridObject> options) {
-
+        //The plant actually never needs to do this
         return 0;
     }
 
