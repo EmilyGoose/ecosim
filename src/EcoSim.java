@@ -6,6 +6,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Random;
 
 //IntelliJ-specific line to stop annoying "access can be package-private" warnings
 @SuppressWarnings("WeakerAccess")
@@ -36,7 +37,7 @@ public class EcoSim {
     public static final int BABY_HEALTH_WOLF = 40;
 
     //Attack-related constants
-    private static final double STRUGGLE_CHANCE = 0.3; //Chance a wolf will be unable to attack a stronger sheep
+    private static final double STRUGGLE_CHANCE = 0.6; //Chance a wolf will be unable to attack a stronger sheep
     private static final double FIGHT_DAMAGE_LOSER = 0.5;
     private static final double FIGHT_DAMAGE_WINNER = 0.1;
 
@@ -59,7 +60,11 @@ public class EcoSim {
                     } else if (randomType <= WOLF_DENSITY + SHEEP_DENSITY) {
                         map[col][row] = new Sheep();
                     } else {
-                        map[col][row] = new Plant();
+                        //Spawn plants that have already been here for a bit so sheep can eat
+                        int min = 2;
+                        int max = 5;
+                        int newAge = new Random().nextInt((max - min) + 1) + min;
+                        map[col][row] = new Plant(newAge);
                     }
                 }
             }
@@ -249,7 +254,16 @@ public class EcoSim {
         }
 
         //Flag the object as updated
-        if (object != null) { object.setLastUpdated(currentIter); }
+        if (object != null) {
+            object.setLastUpdated(currentIter);
+            if (object instanceof Plant) {
+                if (object.getHealth() < 0) {
+                    map[y][x] = null;
+                } else {
+                    ((Plant) object).addAge();
+                }
+            }
+        }
     }
 
     private static boolean hasSpaceLeft(GridObject[][] map) {

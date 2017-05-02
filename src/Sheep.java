@@ -13,7 +13,7 @@ public class Sheep extends GridObject {
 
     Sheep() {
         super();
-        int min = 50;
+        int min = 75;
         int max = 100;
         int health = new Random().nextInt((max - min) + 1) + min;
         super.addHealth(health); //Random health from 50-100 (inclusive)
@@ -53,7 +53,11 @@ public class Sheep extends GridObject {
                     ) {
                 firstSheep = i;
                 break; //We've found a mate, no need to check further since this is our first priority
-            } else if (firstPlant == -1 && o instanceof Plant && this.getHealth() < EcoSim.MAX_SHEEP_HEALTH - o.getHealth()) {
+            } else if (
+                    firstPlant == -1 &&
+                            o instanceof Plant && o.getHealth() > 0 &&
+                            this.getHealth() < EcoSim.MAX_SHEEP_HEALTH - o.getHealth()
+                    ) {
                 firstPlant = i;
             }
         }

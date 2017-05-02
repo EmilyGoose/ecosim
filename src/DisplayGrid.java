@@ -50,6 +50,7 @@ class DisplayGrid {
             Image sheep = Toolkit.getDefaultToolkit().getImage("res/sheep.png");
             Image wolf = Toolkit.getDefaultToolkit().getImage("res/wolf.png");
             Image plant = Toolkit.getDefaultToolkit().getImage("res/plant.png");
+            Image deadPlant = Toolkit.getDefaultToolkit().getImage("res/plant_dead.png");
             Image grass = Toolkit.getDefaultToolkit().getImage("res/grass.png");
             Image maleIcon = Toolkit.getDefaultToolkit().getImage("res/male.png");
             Image femaleIcon = Toolkit.getDefaultToolkit().getImage("res/female.png");
@@ -80,7 +81,7 @@ class DisplayGrid {
                         objectImage = wolf;
                         genderIcon = object.getGender() ? maleIcon : femaleIcon;
                     } else if (object instanceof Plant) {
-                        objectImage = plant;
+                        objectImage = object.getHealth() > 0 ? plant : deadPlant;
                     }
 
                     if (objectImage != null) {
