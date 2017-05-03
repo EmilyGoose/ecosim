@@ -44,8 +44,10 @@ public class EcoSim {
     private static final double FIGHT_DAMAGE_LOSER = 0.8;
     private static final double FIGHT_DAMAGE_WINNER = 0.2;
 
+    private static GridObject[][] map;
+
     public static void main(String[] args) throws Exception {
-        GridObject[][] map = new GridObject[GRID_SIZE][GRID_SIZE];
+        map = new GridObject[GRID_SIZE][GRID_SIZE];
 
         //Set up the grid to display everything
         DisplayGrid grid = new DisplayGrid(map);
@@ -89,13 +91,12 @@ public class EcoSim {
                 }
             }
 
-            grid.refresh();
-
             for (int row = 0; row < GRID_SIZE; row++) {
                 for (int col = 0; col < GRID_SIZE; col++) {
                     EcoSim.updateObject(col, row, map, i);
                 }
             }
+
             grid.refresh();
 
             //Make the thread sleep to allow the user to see the result of the tick
@@ -160,7 +161,7 @@ public class EcoSim {
                                 int newSheepY;
                                 int newSheepX;
 
-                                if (EcoSim.hasSpaceLeft(map)) {
+                                if (EcoSim.hasSpaceLeft()) {
                                     do {
                                         newSheepY = (int) (Math.random() * GRID_SIZE);
                                         newSheepX = (int) (Math.random() * GRID_SIZE);
@@ -217,7 +218,7 @@ public class EcoSim {
                                 GridObject newWolfSpot;
                                 int newWolfY;
                                 int newWolfX;
-                                if (EcoSim.hasSpaceLeft(map)) {
+                                if (EcoSim.hasSpaceLeft()) {
                                     do { //Statistically, this should never be an infinite loop
                                         newWolfY = (int) (Math.random() * GRID_SIZE);
                                         newWolfX = (int) (Math.random() * GRID_SIZE);
@@ -269,7 +270,7 @@ public class EcoSim {
         }
     }
 
-    private static boolean hasSpaceLeft(GridObject[][] map) {
+    private static boolean hasSpaceLeft() {
         for (GridObject[] row : map) {
             for (GridObject rowItem : row) {
                 if (rowItem == null) {
@@ -280,4 +281,23 @@ public class EcoSim {
         return false;
     }
 
+    public static int[] countObjects() {
+        //Structure: [plants, sheep, wolves]
+        int[] returnedValues = new int[]{0,0,0};
+
+        //Iterate through and count values
+        for (GridObject[] row : map) {
+            for (GridObject o : row) {
+                if (o instanceof Plant) {
+                    returnedValues[0] += 1;
+                } else if (o instanceof  Sheep) {
+                    returnedValues[1] += 1;
+                } else if (o instanceof  Wolf) {
+                    returnedValues[2] += 1;
+                }
+            }
+        }
+
+        return returnedValues;
+    }
 }

@@ -8,6 +8,8 @@
 import javax.swing.*;
 import javax.tools.Tool;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.net.URL;
 
 //IntelliJ-specific line to stop annoying "access can be package-private" warnings
 @SuppressWarnings("WeakerAccess")
@@ -101,12 +103,22 @@ class DisplayGrid {
                     }
 
                     if (genderIcon != null) {
-                        g.drawImage(genderIcon, xVal, yVal, width/5, height/5, this);
+                        g.drawImage(genderIcon, xVal, yVal, width / 5, height / 5, this);
                     }
-
-
                 }
             }
+
+            //Count returns [plants, sheep, wolves]
+            int[] count = EcoSim.countObjects();
+
+            g.setFont(new Font("Segoe UI Light", Font.PLAIN, 20));
+
+            int fontX = world[0].length * GridToScreenRatio + 20;
+
+            //Draw numbers for sheep, wolves, etc...
+            g.drawString("Plants : " + count[0], fontX, 20);
+            g.drawString("Sheep : " + count[1], fontX, 40);
+            g.drawString("Wolves : " + count[2], fontX, 60);
         }
     }//end of GridAreaPanel
 
