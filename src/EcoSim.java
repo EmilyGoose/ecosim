@@ -6,6 +6,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 //IntelliJ-specific line to stop annoying "access can be package-private" warnings
@@ -16,7 +17,7 @@ public class EcoSim {
     //See README.md for full list of constants and their uses
 
     //Program constants
-    private static final int GRID_SIZE = 20;
+    private static final int GRID_SIZE = 25;
     private static final int ITERATIONS = 1000;
     private static final int TICK_LENGTH = 100; //Milliseconds per grid refresh
 
@@ -110,8 +111,10 @@ public class EcoSim {
         if (object != null && !(object instanceof Plant) && object.getLastUpdated() < currentIter) {
 
             //Create the ArrayList instances to be passed to the object
-            ArrayList<GridObject> options = new ArrayList<>(0);
-            ArrayList<int[]> optionCoords = new ArrayList<>(0);
+            //Max capacity is 8 so we initialize as such
+            //This saves us from constantly reallocating memory (Thanks Adam!)
+            ArrayList<GridObject> options = new ArrayList<>(8);
+            ArrayList<int[]> optionCoords = new ArrayList<>(8);
 
             //Note: Animals can move diagonally
             for (int col = -1; col <= 1; col += 1) {
@@ -157,31 +160,21 @@ public class EcoSim {
                                     object.getHealth() >= MIN_MATE_HEALTH_SHEEP //Enough health
                                     ) {
                                 //Spawn a sheep
-                                GridObject newSheepSpot;
-                                int newSheepY;
-                                int newSheepX;
+                                //TODO: Make it spawn near the parents
 
-                                if (EcoSim.hasSpaceLeft()) {
-                                    do {
-                                        newSheepY = (int) (Math.random() * GRID_SIZE);
-                                        newSheepX = (int) (Math.random() * GRID_SIZE);
-                                        newSheepSpot = map[newSheepY][newSheepX];
-                                    } while (newSheepSpot != null);
-                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH_SHEEP);
-                                } else { //We can overwrite plants in a pinch
-                                    do {
-                                        newSheepY = (int) (Math.random() * GRID_SIZE);
-                                        newSheepX = (int) (Math.random() * GRID_SIZE);
-                                        newSheepSpot = map[newSheepY][newSheepX];
-                                    } while (!(newSheepSpot instanceof  Plant));
-                                    //The sheep is slightly more damaged b/c it'll have to eat its way out anyways
-                                    //Landing on plants must hurt
-                                    map[newSheepY][newSheepX] = new Sheep(BABY_HEALTH_SHEEP - 10);
+                                //Max capacity is 16 so we initialize as such
+                                //This saves us from constantly reallocating memory (Thanks Adam!)
+                                ArrayList<int[]> emptySpotsNearby = getEmptySpotsNearby(x, y, newX, newY, map);
+
+                                //If there are no empty spots, the area is overcrowded and the sheep cannot give birth
+                                if (emptySpotsNearby.size() > 0) {
+                                    int[] newSheepSpot = emptySpotsNearby.get(0);
+                                    //Spawn the sheep
+                                    map[newSheepSpot[0]][newSheepSpot[1]] = new Sheep(BABY_HEALTH_SHEEP);
+                                    //Damage the parents
+                                    targetSpot.takeDamage(BABY_HEALTH_SHEEP/2);
+                                    object.takeDamage(BABY_HEALTH_SHEEP/2);
                                 }
-
-                                //Damage the parents
-                                targetSpot.takeDamage(BABY_HEALTH_SHEEP/2);
-                                object.takeDamage(BABY_HEALTH_SHEEP/2);
                             }
                         } else if (object instanceof Wolf) {
                             if (targetSpot instanceof Sheep) {
@@ -215,6 +208,7 @@ public class EcoSim {
                                     object.getHealth() >= MIN_MATE_HEALTH_WOLF //Enough health
                                     ) {
                                 //Spawn a wolf
+                                //TODO: Make it spawn near the parents
                                 GridObject newWolfSpot;
                                 int newWolfY;
                                 int newWolfX;
@@ -299,5 +293,33 @@ public class EcoSim {
         }
 
         return returnedValues;
+    }
+
+    private static ArrayList<int[]> getEmptySpotsNearby(int x, int y, int newX, int newY, GridObject[][] map) {
+        ArrayList<int[]> emptySpotsNearby = new ArrayList<>(16);
+
+        for (int col = -1; col <= 1; col += 1) {
+            for (int row = -1; row <= 1; row += 1) {
+                if (y + col >= 0 &&
+                        y + col < GRID_SIZE &&
+                        x + row >= 0 &&
+                        x + row < GRID_SIZE &&
+                        map[y + col][x + row] == null
+                        ) {
+                    emptySpotsNearby.add(new int[]{y + col, x + row});
+                }
+                if (newY + col >= 0 &&
+                        newY + col < GRID_SIZE &&
+                        newX + row >= 0 &&
+                        newX + row < GRID_SIZE &&
+                        map[newY + col][newX + row] == null
+                        ) {
+                    emptySpotsNearby.add(new int[]{newY + col, newX + row});
+                }
+            }
+        }
+        Collections.shuffle(emptySpotsNearby);
+
+        return emptySpotsNearby;
     }
 }
