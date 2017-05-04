@@ -18,7 +18,7 @@ public class EcoSim {
 
     //Program constants
     private static final int GRID_SIZE = 50;
-    private static final int ITERATIONS = 1000;
+    private static final int ITERATIONS = 10000;
     private static final int TICK_LENGTH = 100; //Milliseconds per grid refresh
 
     //World constants. Not guaranteed but they'll be close.
@@ -27,7 +27,7 @@ public class EcoSim {
     private static final double WOLF_DENSITY = 0.05;
     private static final double SHEEP_DENSITY = 0.6;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
-    private static final double GROWTH_RATE = 0.1; //Chance a new plant will spawn in a null spot
+    private static final double GROWTH_RATE = 0.5; //Chance a new plant will spawn in a null spot
 
     //Animal health
     public static final int MAX_WOLF_HEALTH = 100;
@@ -252,17 +252,6 @@ public class EcoSim {
                 }
             }
         }
-    }
-
-    private static boolean hasSpaceLeft() {
-        for (GridObject[] row : map) {
-            for (GridObject rowItem : row) {
-                if (rowItem == null) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public static int[] countObjects() {
