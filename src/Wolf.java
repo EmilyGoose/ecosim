@@ -54,19 +54,20 @@ public class Wolf extends GridObject{
                     ) {
                 firstWolf = i;
                 break; //We've found a mate, no need to check further since this is our first priority
-            } else if (firstSheep == -1 && o instanceof Sheep && this.getHealth() < EcoSim.MAX_WOLF_HEALTH - o.getHealth() / 2) {
-                firstSheep = i;
             } else if (firstMale == -1 && o instanceof Wolf && o.getGender() && super.getGender()) {
                 firstMale = i;
+            } else if (firstSheep == -1 && o instanceof Sheep && this.getHealth() < EcoSim.MAX_WOLF_HEALTH - o.getHealth() / 2) {
+                firstSheep = i;
             }
         }
 
         if (firstWolf >= 0) {
             return options.indexOf(newOptions.get(firstWolf));
+        } else if (firstMale > -1) {
+            //Prioritize fighting over eating (Wolves fight over food)
+            return options.indexOf(newOptions.get(firstMale));
         } else if (firstSheep >= 0) {
             return options.indexOf(newOptions.get(firstSheep));
-        } else if (firstMale > -1) {
-            return options.indexOf(newOptions.get(firstMale));
         } else {
             //Pick a random empty square and move to it
             //We need a slightly different method of iteration here
