@@ -27,7 +27,7 @@ public class EcoSim {
     private static final double WOLF_DENSITY = 0.05;
     private static final double SHEEP_DENSITY = 0.6;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
-    private static final double GROWTH_RATE = 0.5; //Chance a new plant will spawn in a null spot
+    private static final double GROWTH_RATE = 0.4; //Chance a new plant will spawn in a null spot
 
     //Animal health
     public static final int MAX_WOLF_HEALTH = 100;

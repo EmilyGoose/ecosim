@@ -5,8 +5,36 @@ A simple ecosystem simulation built for the OOP unit.
 
 Thanks to @AdamMc331 for helping with efficiency and style feedback. You can see his suggestions [here](https://github.com/AdamMc331/ecosim).
 
+# Features
+
+### All animals
+ * Have gender randomly determined at birth
+ * Can mate, child spawns next to parent
+    * If there's no room, the child won't spawn
+ * Find mates and food nearby
+    * Animals do not see the whole board at once
+ * Have a maximum health
+ * Do not eat when full
+
+### Sheep
+ * Prioritize mating over eating nearby plants
+ 
+### Wolves
+ * Fight other males nearby
+ * Prioritize mating over fighting over eating
+ 
+### Plants
+ * Live for a maximum of 10 ticks
+ * Have a parabolic function to determine health
+
+### Display
+ * Layered images for animal and gender images
+ * Displays number of wolves, sheep, and plants
+
 # Documentation for constants
 All constants that can be tweaked are at the beginning of EcoSim.java
+
+The default constants are the ones found to be the most balanced
 
 ### GRID_SIZE
 Integer determining the size of one side of the square world grid. 10-100 recommended
