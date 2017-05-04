@@ -25,7 +25,7 @@ public class EcoSim {
     private static final double WORLD_FILL_DENSITY = 0.3;
     //WOLF_DENSITY + SHEEP_DENSITY + PLANT_DENSITY = 1
     private static final double WOLF_DENSITY = 0.1;
-    private static final double SHEEP_DENSITY = 0.4;
+    private static final double SHEEP_DENSITY = 0.6;
     //We don't need to declare PLANT_DENSITY because we get it algebraically
     private static final double GROWTH_RATE = 0.1; //Chance a new plant will spawn in a null spot
 
@@ -160,7 +160,6 @@ public class EcoSim {
                                     object.getHealth() >= MIN_MATE_HEALTH_SHEEP //Enough health
                                     ) {
                                 //Spawn a sheep
-                                //TODO: Make it spawn near the parents
 
                                 //Max capacity is 16 so we initialize as such
                                 //This saves us from constantly reallocating memory (Thanks Adam!)
@@ -208,29 +207,20 @@ public class EcoSim {
                                     object.getHealth() >= MIN_MATE_HEALTH_WOLF //Enough health
                                     ) {
                                 //Spawn a wolf
-                                //TODO: Make it spawn near the parents
-                                GridObject newWolfSpot;
-                                int newWolfY;
-                                int newWolfX;
-                                if (EcoSim.hasSpaceLeft()) {
-                                    do { //Statistically, this should never be an infinite loop
-                                        newWolfY = (int) (Math.random() * GRID_SIZE);
-                                        newWolfX = (int) (Math.random() * GRID_SIZE);
-                                        newWolfSpot = map[newWolfY][newWolfX];
-                                    } while (newWolfSpot != null);
-                                } else {
-                                    do { //Statistically, this should never be an infinite loop
-                                        newWolfY = (int) (Math.random() * GRID_SIZE);
-                                        newWolfX = (int) (Math.random() * GRID_SIZE);
-                                        newWolfSpot = map[newWolfY][newWolfX];
-                                    } while (!(newWolfSpot instanceof Plant));
-                                }
 
-                                //Damage the parents
-                                //Wolves take more damage than sheep because they needed to be nerfed
-                                targetSpot.takeDamage(BABY_HEALTH_WOLF);
-                                object.takeDamage(BABY_HEALTH_WOLF);
-                                map[newWolfY][newWolfX] = new Wolf(BABY_HEALTH_WOLF);
+                                //Max capacity is 16 so we initialize as such
+                                //This saves us from constantly reallocating memory (Thanks Adam!)
+                                ArrayList<int[]> emptySpotsNearby = getEmptySpotsNearby(x, y, newX, newY, map);
+
+                                //If there are no empty spots, the area is overcrowded and the sheep cannot give birth
+                                if (emptySpotsNearby.size() > 0) {
+                                    int[] newWolfSpot = emptySpotsNearby.get(0);
+                                    //Spawn the wolf
+                                    map[newWolfSpot[0]][newWolfSpot[1]] = new Wolf(BABY_HEALTH_WOLF);
+                                    //Damage the parents
+                                    targetSpot.takeDamage(BABY_HEALTH_WOLF/2);
+                                    object.takeDamage(BABY_HEALTH_WOLF/2);
+                                }
                             }
                         }
                     } else {
